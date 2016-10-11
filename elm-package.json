@@ -1,5 +1,5 @@
 {
-    "version": "0.1.0",
+    "version": "1.0.0",
     "summary": "Elm wrapper around yabwe/medium-editor",
     "repository": "https://github.com/tianyu/elm-medium-editor.git",
     "license": "MIT",
@@ -7,7 +7,9 @@
         "src",
         "examples"
     ],
-    "exposed-modules": [ "MediumEditor" ],
+    "exposed-modules": [
+        "MediumEditor"
+    ],
     "native-modules": true,
     "dependencies": {
         "elm-lang/core": "4.0.5 <= v < 5.0.0",

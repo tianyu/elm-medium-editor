@@ -13,11 +13,6 @@ module MediumEditor
 
 {-| Rich text editing using the contenteditable API.
 
-This is an Elm wrapper around
-[a Javascript clone of Medium.com's editor](github.com/yabwe/medium-editor).
-It allows for rich-text editing in a web browser environment using the
-contenteditable API.
-
 # Widgets
 @docs editor, editorWithOptions
 
