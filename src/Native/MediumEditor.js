@@ -33,8 +33,9 @@ function writeStyle(css) {
 
 // VIRTUAL DOM WIDGETS
 function editor(options, factList, content) {
+  console.log('creating editor!');
   var model = {
-    options: options,
+    options: formatOptions(options),
     content: content
   };
   return _elm_lang$virtual_dom$Native_VirtualDom.custom(factList, model, implementation);
@@ -45,7 +46,7 @@ function editor(options, factList, content) {
 var implementation = {
   render: function(model) {
     var div = document.createElement('div');
-    new MediumEditor(div, formatOptions(model.options));
+    new MediumEditor(div, model.options);
     div.innerHTML = model.content;
     return div;
   },
@@ -56,7 +57,7 @@ var implementation = {
     if (a.model.content === b.model.content) {
       diff.content = b.model.content;
     }
-    if (a.model.options === b.model.options) {
+    if (!equals(a.model.options, b.model.options)) {
       diff.options = b.model.options;
     }
     if (diff.content === undefined && diff.options === undefined) {
@@ -80,13 +81,55 @@ function applyPatch(domNode, data) {
     if (editor) {
       editor.destroy();
     }
-    new MediumEditor(domNode, formatOptions(data.options));
+    new MediumEditor(domNode, data.options);
   }
   return domNode;
 }
 
 function formatOptions(options) {
-  return options;
+  return {
+    toolbar: formatToolbarOptions(options.toolbar)
+  };
+}
+
+function formatToolbarOptions(options) {
+  if (options.ctor === 'Just') {
+    return options._0;
+  } else {
+    return false;
+  }
+}
+
+/**
+ * Simple equality function for comparing options
+ */
+function equals(a, b) {
+  if (a === b) { return true; }
+
+  if (a instanceof Array) {
+    if (!(b instanceof Array) || a.length !== b.length) {
+      return false;
+    }
+    for (var i = 0; i < a.length; i++) {
+      if (!equals(a[i], b[i])) {
+        return false;
+      }
+    }
+  }
+
+  // Assume we have an object
+  for (var prop in b) {
+    if (b.hasOwnProperty(prop) !== a.hasOwnProperty(prop)) {
+      return false;
+    }
+  }
+  for (var prop in a) {
+    if (a.hasOwnProperty(prop) !== b.hasOwnProperty(prop) || !equals(a[prop], b[prop])) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 // EXPORTS
