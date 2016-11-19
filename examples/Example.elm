@@ -1,15 +1,14 @@
 module Example exposing (..)
 
 import Html exposing (..)
-import Html.App as App
 import Html.Attributes exposing (..)
 import Html.Lazy exposing (..)
 import MediumEditor as Medium
 
 
-main : Program Never
+main : Program Never Model Msg
 main =
-    App.beginnerProgram
+    beginnerProgram
         { model = List.repeat 100 "" |> List.indexedMap (,)
         , view = view
         , update = update
@@ -93,7 +92,7 @@ update : Msg -> Model -> Model
 update (Update index content) =
     List.map
         (\tuple ->
-            if (fst tuple == index) then
+            if (Tuple.first tuple == index) then
                 ( index, content )
             else
                 tuple
